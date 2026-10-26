@@ -1,7 +1,10 @@
 /**
  * MCP 工具定义与处理逻辑（stdio / 将来复用）。
  */
-export const SERVER_INFO = { name: 'gexno-web3', version: '0.1.0' }
+import { readFileSync } from 'node:fs'
+
+const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
+export const SERVER_INFO = { name: 'gexno-web3', version: pkg.version }
 
 export const TOOLS = [
   {
