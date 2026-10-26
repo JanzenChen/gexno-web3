@@ -4,12 +4,12 @@
   "title": "Gexno Web3",
   "description": "Free Ethereum wallet profile & NFT metadata MCP tools (no signup).",
   "repository": {
-    "url": "https://github.com/JanzenTeam/gexno",
+    "url": "https://github.com/JanzenChen/gexno-web3",
     "source": "github"
   },
-  "homepage": "https://www.gexno.com",
+  "homepage": "https://github.com/JanzenChen/gexno-web3",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "remotes": [
     {
       "type": "streamable-http",
