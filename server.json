@@ -1,0 +1,19 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.JanzenChen/gexno-web3",
+  "title": "Gexno Web3",
+  "description": "Free Ethereum wallet profile & NFT metadata MCP tools (no signup).",
+  "repository": {
+    "url": "https://github.com/JanzenTeam/gexno",
+    "source": "github"
+  },
+  "homepage": "https://www.gexno.com",
+  "license": "MIT",
+  "version": "0.1.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.gexno.com/mcp"
+    }
+  ]
+}

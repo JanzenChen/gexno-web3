@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "gexno-web3": {
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/TO/gexno/mcp/src/index.js"],
+      "env": {
+        "GEXNO_API_BASE": "http://127.0.0.1:3000",
+        "GEXNO_INTERNAL_TOKEN": "paste-same-value-as-WEB3_INTERNAL_TOKEN-in-dotenv"
+      }
+    }
+  }
+}
