@@ -14,24 +14,6 @@
 - `WEB3_RPC_CONCURRENCY`（默认 20）：读链
 - `WEB3_META_CONCURRENCY`（默认 20）：拉元数据 HTTP
 
-## Cloudflare WAF / Rate Limiting（上线后在面板配置）
-
-对 `api.gexno.com`（及走同源反代的 `www`）建议叠加：
-
-1. **Rate limiting 规则**
-   - 匹配：`http.request.uri.path contains "/api/web3/"`
-   - 阈值示例：单 IP 120 请求 / 1 分钟（比边缘 nginx 略宽，作第二层）
-   - 动作：Block 或 Managed Challenge
-
-2. **WAF 自定义规则（可选）**
-   - 阻断已知恶意 UA 空扫：`http.user_agent eq ""` 且 path 匹配 `/api/web3/`
-   - 对异常超长 query 拦截（`http.request.uri` 长度）
-
-3. **Bot Fight / Bot Management**
-   - 若开启，确认不会误伤合法 AI Agent；必要时对 `/api/web3/` 放行带明确 UA 的自动化客户端，或仅对浏览器流量挑战
-
-4. **不要**把 `WEB3_INTERNAL_TOKEN` 写进任何前端或公开文档
-
 ## 相关环境变量
 
 见仓库根目录 `.env.example` 中 `WEB3_*` / `IPFS_*` 段。
