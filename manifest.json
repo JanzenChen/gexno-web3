@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "gexno-web3",
   "display_name": "Gexno Web3",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "Free Ethereum wallet profile & NFT metadata tools for AI agents (no signup).",
   "long_description": "Look up any Ethereum wallet balance, contract flag, tx count, and simple risk heuristics; resolve ERC-721/1155 NFT metadata and IPFS image HTTP URLs. Talks to the Gexno Web3 Agent API over HTTP.",
   "author": {
@@ -11,19 +11,27 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JanzenTeam/gexno.git"
+    "url": "https://github.com/JanzenChen/gexno-web3.git"
   },
   "homepage": "https://www.gexno.com",
-  "documentation": "https://github.com/JanzenTeam/gexno/blob/main/mcp/README.md",
-  "support": "https://github.com/JanzenTeam/gexno/issues",
+  "documentation": "https://github.com/JanzenChen/gexno-web3#readme",
+  "support": "https://github.com/JanzenChen/gexno-web3/issues",
   "license": "MIT",
-  "keywords": ["ethereum", "wallet", "nft", "web3", "mcp"],
+  "keywords": [
+    "ethereum",
+    "wallet",
+    "nft",
+    "web3",
+    "mcp"
+  ],
   "server": {
     "type": "node",
     "entry_point": "src/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/src/index.js"],
+      "args": [
+        "${__dirname}/src/index.js"
+      ],
       "env": {
         "GEXNO_API_BASE": "${user_config.api_base}",
         "GEXNO_INTERNAL_TOKEN": "${user_config.internal_token}"
@@ -41,7 +49,11 @@
     }
   ],
   "compatibility": {
-    "platforms": ["darwin", "win32", "linux"],
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
     "runtimes": {
       "node": ">=20.0.0"
     }

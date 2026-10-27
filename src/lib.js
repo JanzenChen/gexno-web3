@@ -13,7 +13,17 @@ export const TOOLS = [
       'Look up an Ethereum wallet on-chain profile: ETH balance, whether the address is a smart contract, ' +
       'outbound transaction count, and simple risk heuristics (ok / new_wallet / contract / eip7702). ' +
       'Use when the user asks to check a wallet, query address balance, or get a quick chain risk snapshot. ' +
-      'Not an AML score. EIP-7702 delegated EOAs are risk=eip7702 (not contracts).',
+      'Not an AML score. EIP-7702 delegated EOAs are reported as risk=eip7702 (not as contracts). ' +
+      'Read-only lookup with no side effects. ' +
+      'Example: lookup_wallet {"address":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"} ' +
+      'returns {"balanceEth":"5.77...","txCount":5969,"risk":"eip7702"}.',
+    annotations: {
+      title: 'Look up an Ethereum wallet',
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -21,10 +31,12 @@ export const TOOLS = [
           type: 'string',
           description: 'Ethereum address (0x-prefixed, 40 hex chars)',
           pattern: '^0x[a-fA-F0-9]{40}$',
+          examples: ['0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'],
         },
       },
       required: ['address'],
       additionalProperties: false,
+      examples: [{ address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045' }],
     },
   },
   {
@@ -33,7 +45,16 @@ export const TOOLS = [
       'Resolve NFT metadata for a contract + tokenId: name, description, image HTTP URL, IPFS gateway link, ' +
       'and raw metadata JSON. Supports ERC-721 tokenURI and ERC-1155 uri. ' +
       'Use when the user asks for NFT metadata, token image, or to parse IPFS NFT JSON. ' +
-      'tokenId must be a decimal string (or integer).',
+      'tokenId must be a decimal string (or integer). Read-only lookup with no side effects. ' +
+      'Example: lookup_nft {"contract":"0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D","tokenId":"1"} ' +
+      'returns the Bored Ape #1 metadata with an erc721 standard marker and imageHttp URL.',
+    annotations: {
+      title: 'Look up NFT metadata',
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -41,14 +62,17 @@ export const TOOLS = [
           type: 'string',
           description: 'NFT contract address (0x-prefixed, 40 hex chars)',
           pattern: '^0x[a-fA-F0-9]{40}$',
+          examples: ['0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D'],
         },
         tokenId: {
           oneOf: [{ type: 'string', pattern: '^\\d+$' }, { type: 'integer', minimum: 0 }],
           description: 'Token ID as decimal string or non-negative integer',
+          examples: ['1', 1],
         },
       },
       required: ['contract', 'tokenId'],
       additionalProperties: false,
+      examples: [{ contract: '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D', tokenId: '1' }],
     },
   },
 ]
