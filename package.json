@@ -1,10 +1,23 @@
 {
-  "name": "gexno-web3-mcp",
-  "version": "0.1.3",
-  "private": true,
+  "name": "@gexno/web3-mcp",
+  "version": "0.1.5",
   "type": "module",
   "description": "MCP server for Gexno Web3 Agent API (wallet profile + NFT metadata)",
   "license": "MIT",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ethereum",
+    "wallet",
+    "nft",
+    "web3",
+    "ai-agents"
+  ],
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JanzenChen/gexno-web3.git"
@@ -17,6 +30,12 @@
   "bin": {
     "gexno-web3-mcp": "./src/index.js"
   },
+  "exports": {
+    ".": "./src/lib.js",
+    "./lib": "./src/lib.js",
+    "./server": "./src/index.js",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "start": "node src/index.js",
     "smoke": "node scripts/smoke.mjs",
@@ -27,5 +46,8 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "gexno-web3",
   "display_name": "Gexno Web3",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "Free Ethereum wallet profile & NFT metadata tools for AI agents (no signup).",
   "long_description": "Look up any Ethereum wallet balance, contract flag, tx count, and simple risk heuristics; resolve ERC-721/1155 NFT metadata and IPFS image HTTP URLs. Talks to the Gexno Web3 Agent API over HTTP.",
   "author": {

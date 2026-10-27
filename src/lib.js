@@ -10,13 +10,9 @@ export const TOOLS = [
   {
     name: 'lookup_wallet',
     description:
-      'Look up an Ethereum wallet on-chain profile: ETH balance, whether the address is a smart contract, ' +
-      'outbound transaction count, and simple risk heuristics (ok / new_wallet / contract / eip7702). ' +
-      'Use when the user asks to check a wallet, query address balance, or get a quick chain risk snapshot. ' +
-      'Not an AML score. EIP-7702 delegated EOAs are reported as risk=eip7702 (not as contracts). ' +
-      'Read-only lookup with no side effects. ' +
-      'Example: lookup_wallet {"address":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"} ' +
-      'returns {"balanceEth":"5.77...","txCount":5969,"risk":"eip7702"}.',
+      'Look up an Ethereum wallet: ETH balance, contract flag, outbound tx count, and simple risk ' +
+      'heuristics (ok / new_wallet / contract / eip7702). EIP-7702 delegated EOAs report risk=eip7702. ' +
+      'Read-only; not an AML score.',
     annotations: {
       title: 'Look up an Ethereum wallet',
       readOnlyHint: true,
@@ -29,9 +25,8 @@ export const TOOLS = [
       properties: {
         address: {
           type: 'string',
-          description: 'Ethereum address (0x-prefixed, 40 hex chars)',
+          description: 'Ethereum address (0x + 40 hex)',
           pattern: '^0x[a-fA-F0-9]{40}$',
-          examples: ['0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'],
         },
       },
       required: ['address'],
@@ -42,12 +37,8 @@ export const TOOLS = [
   {
     name: 'lookup_nft',
     description:
-      'Resolve NFT metadata for a contract + tokenId: name, description, image HTTP URL, IPFS gateway link, ' +
-      'and raw metadata JSON. Supports ERC-721 tokenURI and ERC-1155 uri. ' +
-      'Use when the user asks for NFT metadata, token image, or to parse IPFS NFT JSON. ' +
-      'tokenId must be a decimal string (or integer). Read-only lookup with no side effects. ' +
-      'Example: lookup_nft {"contract":"0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D","tokenId":"1"} ' +
-      'returns the Bored Ape #1 metadata with an erc721 standard marker and imageHttp URL.',
+      'Resolve NFT metadata for a contract + tokenId: name, description, image HTTP URL, IPFS gateway ' +
+      'link, and raw metadata JSON. Supports ERC-721 and ERC-1155. Read-only.',
     annotations: {
       title: 'Look up NFT metadata',
       readOnlyHint: true,
@@ -60,14 +51,12 @@ export const TOOLS = [
       properties: {
         contract: {
           type: 'string',
-          description: 'NFT contract address (0x-prefixed, 40 hex chars)',
+          description: 'Contract address (0x + 40 hex)',
           pattern: '^0x[a-fA-F0-9]{40}$',
-          examples: ['0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D'],
         },
         tokenId: {
           oneOf: [{ type: 'string', pattern: '^\\d+$' }, { type: 'integer', minimum: 0 }],
-          description: 'Token ID as decimal string or non-negative integer',
-          examples: ['1', 1],
+          description: 'Decimal token id',
         },
       },
       required: ['contract', 'tokenId'],
@@ -88,7 +77,8 @@ export function asNonEmptyString(value, field) {
 }
 
 export function createApiGet({ apiBase, internalToken, timeoutMs }) {
-  const base = String(apiBase || 'http://127.0.0.1:3000').replace(/\/$/, '')
+  // 公开 npm 包默认连生产 API；本地开发用 GEXNO_API_BASE=http://127.0.0.1:3000 覆盖
+  const base = String(apiBase || 'https://api.gexno.com').replace(/\/$/, '')
   const token = String(internalToken || '').trim()
   const timeout = Number.isFinite(timeoutMs) && timeoutMs > 0 ? Math.floor(timeoutMs) : 35_000
 

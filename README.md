@@ -1,6 +1,12 @@
-# gexno-web3 — MCP server for Ethereum wallet & NFT lookups
+# Gexno Web3 MCP
 
-Free, no-signup on-chain lookups for AI agents. Two tools today:
+Free, no-signup on-chain lookups for AI agents. Two read-only tools: **wallet profile** and **NFT metadata**.
+
+- **Remote:** `https://api.gexno.com/mcp` — Streamable HTTP, nothing to install
+- **npm:** `npx @gexno/web3-mcp` — same tools over stdio
+- **Registry name:** `io.github.JanzenChen/gexno-web3`
+
+No API key, no signup, no wallet connection. Reads only.
 
 | Tool | What it returns |
 |---|---|
@@ -10,14 +16,6 @@ Free, no-signup on-chain lookups for AI agents. Two tools today:
 Backed by the Gexno Web3 Agent API: <https://api.gexno.com/api/web3>
 
 ## Use it (remote, nothing to install)
-
-Streamable HTTP endpoint, no signup, no API key:
-
-```
-https://api.gexno.com/mcp
-```
-
-**Claude Desktop / Cursor / any MCP client with remote server support**
 
 ```json
 {
@@ -29,11 +27,7 @@ https://api.gexno.com/mcp
 }
 ```
 
-**Official MCP Registry name**
-
-```
-io.github.JanzenChen/gexno-web3
-```
+Works with Claude Desktop, Cursor, and any MCP client that supports remote servers.
 
 Discovery documents:
 
@@ -41,34 +35,47 @@ Discovery documents:
 - AI catalog — <https://api.gexno.com/.well-known/ai-catalog.json>
 - OpenAPI — <https://api.gexno.com/api/web3/openapi.json>
 
-## Use it (local bundle, stdio)
-
-Download `gexno-web3.mcpb` from [Releases](https://github.com/JanzenChen/gexno-web3/releases/latest) and open it in Claude Desktop (drag onto the app, or Settings → Extensions). Requires Node.js >= 20.
-
-Prefer running from source?
+## Use it (npm, stdio)
 
 ```bash
-git clone https://github.com/JanzenChen/gexno-web3.git
-cd gexno-web3
-npm install
-node src/index.js     # speaks MCP over stdio
+npx -y @gexno/web3-mcp
 ```
 
-Example client config (see `claude-desktop.example.json` / `cursor-mcp.example.json`):
+Client config:
 
 ```json
 {
   "mcpServers": {
     "gexno-web3": {
-      "command": "node",
-      "args": ["/absolute/path/gexno-web3/src/index.js"],
-      "env": { "GEXNO_API_BASE": "https://api.gexno.com" }
+      "command": "npx",
+      "args": ["-y", "@gexno/web3-mcp"]
     }
   }
 }
 ```
 
-> Note: the stdio bundle calls the same public HTTP API. Only set `GEXNO_INTERNAL_TOKEN` if you run your own Gexno server — never commit it.
+Requires Node.js >= 20. The stdio process calls the same public HTTP API.
+
+### Environment variables
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `GEXNO_API_BASE` | `https://api.gexno.com` | API root, useful for self-hosted instances |
+| `GEXNO_TIMEOUT_MS` | `35000` | Per-request timeout; NFT + IPFS resolution can be slow |
+| `GEXNO_INTERNAL_TOKEN` | — | Only for self-hosted Gexno APIs that require it. Never commit a value. |
+
+### Programmatic use
+
+```js
+import { TOOLS, createApiGet, runTool } from '@gexno/web3-mcp'
+
+const apiGet = createApiGet({ apiBase: 'https://api.gexno.com' })
+const wallet = await runTool('lookup_wallet', { address: '0xd8dA...6045' }, apiGet)
+```
+
+## Use it (local bundle, MCPB)
+
+Download `gexno-web3.mcpb` from [Releases](https://github.com/JanzenChen/gexno-web3/releases/latest) and open it in Claude Desktop (drag onto the app, or Settings → Extensions).
 
 ## What the output looks like
 
@@ -92,8 +99,19 @@ EIP-7702 delegated EOAs are reported as `risk: "eip7702"` with `isContract: fals
 - Cached reads: wallet ~60s, NFT metadata ~5min. Repeat lookups are millisecond-scale.
 - No signup, no tracking, no wallet connection. Reads only.
 - Not an AML/risk score. Heuristics are intentionally simple.
+- Errors surface as normal MCP tool errors; the process does not crash.
 
-Security posture and residual risks are documented in [HARDENING.md](HARDENING.md).
+## Development
+
+```bash
+npm install
+npm run smoke    # live wallet lookup against the API
+npm start        # run the stdio server directly
+```
+
+Test against a local API instead of production with `GEXNO_API_BASE=http://127.0.0.1:3000`.
+
+Security posture and residual risks: [HARDENING.md](https://github.com/JanzenChen/gexno-web3/blob/main/HARDENING.md)
 
 ## Links
 
